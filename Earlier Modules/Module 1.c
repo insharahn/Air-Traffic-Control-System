@@ -1,3 +1,7 @@
+// Insharah Irfan  : 	23i-0615
+// Aabia Ali 		:	23i-0704
+// CS - D
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
