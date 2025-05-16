@@ -73,7 +73,7 @@ g++ -o stripe_pay stripe_pay.cpp -lpthread
 ```
 
 ### Running the Project
-Run each component in a separate terminal window.
+Run each component in a separate terminal window except for the avn_generator object file.
 
 # Contributers
 
