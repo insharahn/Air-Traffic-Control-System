@@ -2,6 +2,8 @@
 
 AirControlX is a modular, real-time air traffic control simulation built in C++ that handles flight management, runway scheduling, aviation violation monitoring, and payment processing. The project features multiple processes, inter-process communication, multithreading, fault simulation, and a graphical interface built using SFML.
 
+There are 3 runways, each with a specific purpose (departures/arrivals/emergency or cargo). Only one flight can access a runway at a time. The flights move through phases based on their direction. Airfracts with ground violations are towed. Speed violations are constantly checked and an Aircraft Violation Notice (AVN) is generated if detected, which can be viewed on the Airline Portal and paid on the Stripe Payment Portal. 
+
 ## Features
 
 - Modular architecture with 4 main components:
@@ -47,8 +49,8 @@ AirControlX is a modular, real-time air traffic control simulation built in C++ 
 
 ## Synchronization
 - **Multithreading:**
-  - Runway threads (1 per runway)
-  - Radar threads (1 per flight)
+  - Flight threads (1 per flight to proceed through the phases)
+  - Radar threads (1 per flight to check violations)
   - Display thread (UI updates)
 - **Mutexes & Condition Variables:**
   - Protect shared resources (queues, logs, runways).
@@ -59,7 +61,7 @@ AirControlX is a modular, real-time air traffic control simulation built in C++ 
 ### Dependencies
 
 - C++17 or later
-- <a href=https://www.sfml-dev.org/download/sfml/2.4.2/>SFML 2.4.2</a>
+- <a href=https://www.sfml-dev.org/download/sfml/3.0.0/>SFML 3.0.0</a>
 - POSIX-compliant environment (for FIFOs and fork())
 
 ### Compilation
