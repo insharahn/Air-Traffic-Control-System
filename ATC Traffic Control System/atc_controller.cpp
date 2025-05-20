@@ -335,7 +335,7 @@ public:
                 }
             } else if (aircraft.phase == APPROACH) {
                 aircraft.currentSpeed = 240 + (rand() % 51); // 240-290 km/h
-                if (difftime(now, aircraft.lastPhaseChange) > 5) {
+                if (difftime(now, aircraft.lastPhaseChange) > 20) {
                     aircraft.phase = LANDING;
                     aircraft.lastPhaseChange = now;
                     logEvent("[PHASE] " + aircraft.id + " moved to LANDING.");
@@ -358,7 +358,7 @@ public:
                 switch (aircraft.phase) {
                     case HOLDING:
                         aircraft.currentSpeed = 400 + (rand() % 201);
-                        if (difftime(now, aircraft.lastPhaseChange) > 5) {
+                        if (difftime(now, aircraft.lastPhaseChange) > 20) {
                             aircraft.phase = APPROACH;
                             aircraft.lastPhaseChange = now;
                             logEvent("[PHASE] " + aircraft.id + " (RWY-C) moved to APPROACH.");
@@ -366,7 +366,7 @@ public:
                         break;
                     case APPROACH:
                         aircraft.currentSpeed = 240 + (rand() % 51);
-                        if (difftime(now, aircraft.lastPhaseChange) > 5) {
+                        if (difftime(now, aircraft.lastPhaseChange) > 20) {
                             aircraft.phase = LANDING;
                             aircraft.lastPhaseChange = now;
                             logEvent("[PHASE] " + aircraft.id + " (RWY-C) moved to LANDING.");
@@ -382,7 +382,7 @@ public:
                         }
                         break;
                     case TAXI:
-                        if (difftime(now, aircraft.lastPhaseChange) > 5) {
+                        if (difftime(now, aircraft.lastPhaseChange) > 20) {
                             aircraft.phase = AT_GATE;
                             aircraft.currentSpeed = 0;
                             aircraft.lastPhaseChange = now;
@@ -394,7 +394,7 @@ public:
                         break;
                     case AT_GATE:
                         if ((aircraft.direction == EAST || aircraft.direction == WEST) &&
-                            difftime(now, aircraft.lastPhaseChange) > 5) {
+                            difftime(now, aircraft.lastPhaseChange) > 20) {
                             aircraft.phase = TAXI;
                             aircraft.currentSpeed = 15 + (rand() % 16);
                             aircraft.lastPhaseChange = now;
@@ -414,7 +414,7 @@ public:
                         }
                         break;
                     case CLIMB:
-                        if (difftime(now, aircraft.lastPhaseChange) > 5) {
+                        if (difftime(now, aircraft.lastPhaseChange) > 20) {
                             aircraft.phase = CRUISE;
                             aircraft.currentSpeed = 800 + (rand() % 101);
                             aircraft.lastPhaseChange = now;
@@ -439,7 +439,7 @@ public:
                     }
                     break;
                 case TAXI:
-                    if (difftime(now, aircraft.lastPhaseChange) > 5) {
+                    if (difftime(now, aircraft.lastPhaseChange) > 20) {
                         aircraft.phase = AT_GATE;
                         aircraft.currentSpeed = 0;
                         aircraft.lastPhaseChange = now;
@@ -457,7 +457,7 @@ public:
         else if (aircraft.direction == EAST || aircraft.direction == WEST) {
             switch (aircraft.phase) {
                 case AT_GATE:
-                    if (difftime(now, aircraft.lastPhaseChange) > 5) {
+                    if (difftime(now, aircraft.lastPhaseChange) > 20) {
                         aircraft.phase = TAXI;
                         aircraft.currentSpeed = 15 + (rand() % 16);
                         aircraft.lastPhaseChange = now;
@@ -465,7 +465,7 @@ public:
                     }
                     break;
                 case TAXI:
-                    if (difftime(now, aircraft.lastPhaseChange) > 5) {
+                    if (difftime(now, aircraft.lastPhaseChange) > 20) {
                         aircraft.phase = TAKEOFF_ROLL;
                         aircraft.currentSpeed = 0;
                         aircraft.lastPhaseChange = now;
@@ -485,7 +485,7 @@ public:
                     }
                     break;
                 case CLIMB:
-                    if (difftime(now, aircraft.lastPhaseChange) > 5) {
+                    if (difftime(now, aircraft.lastPhaseChange) > 20) {
                         aircraft.phase = CRUISE;
                         aircraft.currentSpeed = 800 + (rand() % 101);
                         aircraft.lastPhaseChange = now;
@@ -913,6 +913,45 @@ public:
             flight.mappedSimSecond = static_cast<int>(ratio * SIMULATION_DURATION);
         }
     }
+    
+    /*
+    void mapScheduledTimes() {
+    if (flights.empty()) return;
+
+    // Find min and max scheduled minutes
+    int minMinutes = flights[0].scheduledMinutes;
+    int maxMinutes = flights[0].scheduledMinutes;
+
+    for (auto& flight : flights) {
+        if (flight.scheduledMinutes < minMinutes) minMinutes = flight.scheduledMinutes;
+        if (flight.scheduledMinutes > maxMinutes) maxMinutes = flight.scheduledMinutes;
+    }
+
+    // Define the simulation window with offsets
+    const int startOffset = 30; // Start at 30 seconds
+    const int endBuffer = 60;  // End 60 seconds before simulation duration
+    const int effectiveSimDuration = SIMULATION_DURATION - startOffset - endBuffer; // 300 - 30 - 60 = 210 seconds
+
+    // Calculate the real-time window (in minutes)
+    int realTimeWindow = maxMinutes - minMinutes;
+
+    if (realTimeWindow == 0) {
+        // If all flights have the same scheduled time, spread them evenly within the effective window
+        for (size_t i = 0; i < flights.size(); ++i) {
+            flights[i].mappedSimSecond = startOffset + (i * effectiveSimDuration) / flights.size();
+        }
+    } else {
+        // Map proportionally to the effective simulation window
+        for (auto& flight : flights) {
+            double relativeMinute = static_cast<double>(flight.scheduledMinutes - minMinutes);
+            double ratio = relativeMinute / realTimeWindow;
+            // Map to the effective window [startOffset, SIMULATION_DURATION - endBuffer]
+            flight.mappedSimSecond = startOffset + static_cast<int>(ratio * effectiveSimDuration);
+        }
+    }
+  }*/
+    
+
 
     void scheduleFlights() {
         // Sort flights by scheduled time and priority

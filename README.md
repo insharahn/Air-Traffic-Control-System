@@ -61,7 +61,7 @@ There are 3 runways, each with a specific purpose (departures/arrivals/emergency
 ### Dependencies
 
 - C++17 or later
-- <a href=https://www.sfml-dev.org/download/sfml/3.0.0/>SFML 3.0.0</a>
+- <a href=https://www.sfml-dev.org/download/sfml/2.6.1/>SFML 2.6.1</a>
 - POSIX-compliant environment (for FIFOs and fork())
 
 ### Compilation
