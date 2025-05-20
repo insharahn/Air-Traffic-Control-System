@@ -77,6 +77,18 @@ g++ -o stripe_pay stripe_pay.cpp -lpthread
 ### Running the Project
 Run each component in a separate terminal window except for the avn_generator object file.
 
+The main component (atc_controller) should run first:
+``` sh
+./atc_controller
+```
+Then the Airline and Stripe Payment Portals should be launched in seperate terminals. 
+``` sh
+./airline_portal
+```
+``` sh
+./stripe_pay
+```
+
 # Contributers
 
 - <a href=https://github.com/insharahn>Insharah Irfan Nazir</a>
